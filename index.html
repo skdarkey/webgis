@@ -8,7 +8,12 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <!-- Adding measure tool css file -->
     <link rel="stylesheet" href="./lib/leaflet-measure1.css">
-    <!-- Adding a style for the map division -->
+    <!-- Adding the marker cluster css -->
+    <link rel="stylesheet" href="./lib/MarkerCluster.css">
+    <link rel="stylesheet" href="./lib/MarkerCluster.Default.css">
+    <!-- Adding style sheet for leaflet geocoder -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+
     <style>
         #map {
             width: 100%;
@@ -39,10 +44,18 @@
 <script src="./lib/leaflet.browser.print.min.js"></script>
 <!-- Adding leaflet measure script-->
 <script src="./lib/leaflet-measure1.js"></script>
+<!-- Adding the geojson data -->
+<script src="./data/sample_geojson.js"></script>
+<!-- Adding the leaflet marker cluster-->
+<script src="./lib/leaflet.markercluster.js"></script>
+<!-- Adding the javascript for the leaflet geocoder -->
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
 <script>
     // Initializing the Leaflet and setting a centre view
-    var map = L.map('map').setView([44.545, 3.459], 13);          // map centre coordinate with zoom level 13
+    //var map = L.map('map').setView([44.545, 3.459], 13);          // map centre for Lozere France
+    var map = L.map('map').setView([38.8610, 71.2761], 7);          // map centre coordinate with zoom level 13
+
     // setting the location of the zoom icon (optional)
     map.zoomControl.setPosition ('topright');
 
@@ -51,9 +64,9 @@
     }).addTo(map);
 
     // Adding marker in the center of the map
-    L.marker([44.545, 3.459]).addTo(map)
-        .bindPopup('Current Building location.<br>')
-        .openPopup();
+    //L.marker([38.8610, 71.2761]).addTo(map)
+    //     .bindPopup('Current Building location.<br>')
+    //     .openPopup();
 
     // Adding a map scale to map
     L.control.scale().addTo(map)
@@ -91,6 +104,19 @@
     position: 'topright',               // setting the position of the measurement control icon
     autoActivate: false,                // Prevent automatic activation of the measurement tool
 }).addTo(map);
+
+// Loading the geojson data onto Leaflet as marker cluster
+var marker = L.markerClusterGroup();              //initializing the marker cluster as variable
+var geojsondata = L.geoJSON(data, {
+     onEachFeature: function (feature, layer) {
+         layer.bindPopup(feature.properties.name)    //adding dynamic properties from the features in the data
+     }                                              // popup when clicked upon.
+});
+geojsondata.addTo(marker);
+marker.addTo(map)
+
+// Adding the geocoder to the map
+L.Control.geocoder().addTo(map);
 
 </script>
 
