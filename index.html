@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Allianz Prop Intelligence</title>
+    <!--This the style sheet of the leaflet map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <!-- Adding a style for the map division -->
+    <style>
+        #map {
+            width: 100%;
+            height: 700px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map">
+
+    </div>
+</body>
+<!-- This is the script from Leaflet -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+</html>
+
+<script>
+    // Initializing the Leaflet and setting a centre view
+    var map = L.map('map').setView([44.545, 3.459], 13);          // map centre coordinate with zoom level 13
+    // setting the location of the zoom icon (optional)
+    map.zoomControl.setPosition ('topright');
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Adding marker in the center of the map
+    L.marker([44.545, 3.459]).addTo(map)
+        .bindPopup('Current Building location.<br>')
+        .openPopup();
+
+    // Adding a map scale to map
+    L.control.scale().addTo(map)
+    // L.control.scale({position : 'bottomright'}).addTo(map)
+
+</script>
+
+
+
