@@ -16,9 +16,10 @@
     </style>
 </head>
 <body>
-    <div id="map">
+    <div id="map"></div>
+    <!-- adding a button for full screen view-->
+    <button onclick="fullScreenView()"> View in full screen</button>
 
-    </div>
 </body>
 <!-- This is the script from Leaflet -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
@@ -43,6 +44,12 @@
     // Adding a map scale to map
     L.control.scale().addTo(map)
     // L.control.scale({position : 'bottomright'}).addTo(map)
+
+    // Adding a full screen map view function
+    var mapId = document.getElementById('map');          // grabbing the id of the map object or the map div
+    function fullScreenView() {
+        mapId.requestFullscreen();                    // this is a javascript in-built function that is called
+    }
 
 </script>
 
