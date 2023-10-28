@@ -29,6 +29,8 @@
     <div class="coordinate"></div>
     <!--Adding a print map button-->
     <button class="print-map">Print map</button>
+    <!-- Adding a button for Zoom to Original center view-->
+    <button class="zoom-to-layer">Zoom To Layer</button>
 
 </body>
 
@@ -59,9 +61,18 @@
     // setting the location of the zoom icon (optional)
     map.zoomControl.setPosition ('topright');
 
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    // adding osm tilelayer as base map
+    var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
+
+    // adding another base map (searched for OSM basemap providers)
+    var OSMFrancais = L.tileLayer('https://maptiles.p.rapidapi.com/fr/map/v1/{z}/{x}/{y}.png?rapidapi-key={apikey}', {
+        attribution: '&copy; <a href="http://www.maptilesapi.com/">MapTiles API</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        apikey: '<your apikey>'
+        //maxZoom: 22
+    });
+
 
     // Adding marker in the center of the map
     //L.marker([38.8610, 71.2761]).addTo(map)
@@ -117,6 +128,21 @@ marker.addTo(map)
 
 // Adding the geocoder to the map
 L.Control.geocoder().addTo(map);
+
+// Leaflet layer control for basemaps and the markers
+var baseMaps = {
+    'OSM': osm,
+    'OSM_French': OSMFrancais,
+}
+var overlayMaps = {
+    'GeoJson Markers': marker     // recreating a variable for the marker // more marker layers can be added here
+}
+L.control.layers(baseMaps, overlayMaps).addTo(map);         // adding both basemaps ad markers geojson data to map
+
+// adding function for the zoom-to-layer button. I use the jquery selector to select the button and added the function
+$('.zoom-to-layer').click(function() {
+    map.setView([38.8610, 71.2761], 7)                            // this sets the map back to start location and zoom level
+})
 
 </script>
 
