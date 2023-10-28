@@ -6,7 +6,8 @@
     <title>Allianz Prop Intelligence</title>
     <!--This the style sheet of the leaflet map -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-
+    <!-- Adding measure tool css file -->
+    <link rel="stylesheet" href="./lib/leaflet-measure1.css">
     <!-- Adding a style for the map division -->
     <style>
         #map {
@@ -19,12 +20,25 @@
     <div id="map"></div>
     <!-- adding a button for full screen view-->
     <button onclick="fullScreenView()"> View in full screen</button>
+    <!-- Adding a division for the coordinate viewer-->
+    <div class="coordinate"></div>
+    <!--Adding a print map button-->
+    <button class="print-map">Print map</button>
 
 </body>
+
+</html>
+
 <!-- This is the script from Leaflet -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
-</html>
+<!-- Adding the Jquery link to handle Document Object Manipulation-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<!-- Adding the other leaflet browser print functionality-->
+<script src="./lib/leaflet.browser.print.min.js"></script>
+<!-- Adding leaflet measure script-->
+<script src="./lib/leaflet-measure1.js"></script>
 
 <script>
     // Initializing the Leaflet and setting a centre view
@@ -50,6 +64,33 @@
     function fullScreenView() {
         mapId.requestFullscreen();                    // this is a javascript in-built function that is called
     }
+
+    // Adding map coordinate display function
+    map.on('mousemove', function(e) {                 // this executes a function based on a jquery event. Here the jquery event is
+        console.log(e)                       // mousemove. so here, it logs the attributes of my map object to the console each time 
+        $('.coordinate').html(`Lat: ${e.latlng.lat} Lng: ${e.latlng.lng}`)                                              // i move the mouse on the map
+    })
+
+    // map printing function
+    $('.print-map').click(function () {     // using the dot notation of jquery to select the element by its class name
+        window.print()              // using the javascript default function to print the window
+    })                      
+
+    // Adding the browser print plugin function 
+    // L.control.browserPrint(options).addTo(map);
+    L.control.browserPrint().addTo(map);
+
+    // Implementing the measure tool
+
+    L.control.measure({
+    primaryLengthUnit: 'meters',
+    primaryAreaUnit: 'sqmeters',
+    activeColor: 'red',                 // setting a color for active measurement
+    completedColor: 'blue',             // setting a color for completed measurement
+    captureZIndex: 10000,               // Setting a high Z-index to prevent issues with other map elements
+    position: 'topright',               // setting the position of the measurement control icon
+    autoActivate: false,                // Prevent automatic activation of the measurement tool
+}).addTo(map);
 
 </script>
 
